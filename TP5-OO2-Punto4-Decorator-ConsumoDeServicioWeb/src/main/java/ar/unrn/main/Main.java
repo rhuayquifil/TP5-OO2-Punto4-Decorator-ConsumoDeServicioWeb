@@ -1,6 +1,9 @@
 package ar.unrn.main;
 
+import ar.unrn.domain.model.BaseDeDatosPropiedades;
 import ar.unrn.domain.model.Componente;
+import ar.unrn.domain.model.DomainExceptions;
+import ar.unrn.domain.model.EnBaseGuardarDatoDecoratorComponente;
 import ar.unrn.domain.model.EnDiscoGuardaDatoDecoratorComponente;
 import ar.unrn.domain.model.RestCallComponente;
 
@@ -9,16 +12,21 @@ public class Main {
 //		RestCallComponente rest = new RestCallComponente("https://jsonplaceholder.typicode.com/posts");
 //		System.out.println(rest.run());
 
-		Componente enDiscoGuardarDatos = new EnDiscoGuardaDatoDecoratorComponente("",
+		Componente enDiscoGuardarDatos = new EnDiscoGuardaDatoDecoratorComponente(
+				"C:\\Users\\ezehu\\git\\TP5-OO2-Punto4-Decorator-ConsumoDeServicioWeb\\data.txt", ", ",
 				new RestCallComponente("https://jsonplaceholder.typicode.com/posts"));
-		enDiscoGuardarDatos.guardarDatos();
 
-//		Componente enBase = new EnBaseGuardarDatoDecoratorComponente(new EnDiscoGuardaDatoDecoratorComponente("",
-//				new RestCallComponente("https://jsonplaceholder.typicode.com/posts")));
-//		enBase.guardarDatos();
-//		System.out.println(rest.leerDatos());
-//		System.out.println(rest.run());
+		try {
 
+			Componente enBaseGuardarDatos = new EnBaseGuardarDatoDecoratorComponente(
+					new BaseDeDatosPropiedades("", "root", ""), "",
+					new RestCallComponente("https://jsonplaceholder.typicode.com/posts"));
+
+			enBaseGuardarDatos.guardarDatos();
+
+		} catch (DomainExceptions e) {
+			System.out.println(e.getMessage());
+		}
 		// TENES QUE HACER EL LEER DATOS EN RESTCALL Y LOS GUARDARDATOS
 //		endisco(new RestCall("https://jsonplaceholder.typicode.com/posts"))
 	}

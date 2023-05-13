@@ -6,5 +6,5 @@ public interface Componente {
 
 	List<Post> leerPosts();
 
-	void guardarDatos();
+	void guardarDatos() throws DomainExceptions;
 }
