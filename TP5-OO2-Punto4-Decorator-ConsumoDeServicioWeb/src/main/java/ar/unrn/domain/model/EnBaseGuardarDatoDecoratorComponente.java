@@ -23,14 +23,21 @@ public class EnBaseGuardarDatoDecoratorComponente extends GuardaDatoDecoratorCom
 				properties.get("contrasena"));
 				java.sql.PreparedStatement state = conn.prepareStatement(sqlInsertPost)) {
 
-			// CREA LA BASE Y SUBI LOS DATOS
-			int cantidad = state.executeUpdate();
+//			"INSERT INTO post (userId, id, title, body)" + "VALUES (?, ?, ?, ?);"
 
-			if (cantidad <= 0) {
-				throw new DomainExceptions("error al ingresar Post");
+			for (Post post : super.leerPosts()) {
+				state.setInt(1, Integer.valueOf(post.userId()));
+				state.setInt(2, Integer.valueOf(post.id()));
+				state.setString(3, post.title());
+				state.setString(4, post.body());
+
+				int cantidad = state.executeUpdate();
+
+				if (cantidad <= 0) {
+					throw new DomainExceptions("error al ingresar Post");
+				}
 			}
-
-		} catch (SQLException | NumberFormatException e) {
+		} catch (SQLException e) {
 			throw new DomainExceptions("error al prosesar consulta");
 		}
 

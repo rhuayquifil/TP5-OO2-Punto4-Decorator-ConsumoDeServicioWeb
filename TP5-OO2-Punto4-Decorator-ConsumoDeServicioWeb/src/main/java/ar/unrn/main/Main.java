@@ -17,17 +17,25 @@ public class Main {
 				new RestCallComponente("https://jsonplaceholder.typicode.com/posts"));
 
 		try {
-
 			Componente enBaseGuardarDatos = new EnBaseGuardarDatoDecoratorComponente(
-					new BaseDeDatosPropiedades("", "root", ""), "",
+					new BaseDeDatosPropiedades("jdbc:mysql://127.0.0.1/tp5_consumodeservicioweb", "root", ""),
+					"INSERT INTO post (userId, id, title, body)" + "VALUES (?, ?, ?, ?);",
 					new RestCallComponente("https://jsonplaceholder.typicode.com/posts"));
 
-			enBaseGuardarDatos.guardarDatos();
+			Componente dosVecesEnDiscoConDistintoFormatoYUnaEnBase = new EnDiscoGuardaDatoDecoratorComponente(
+					"C:\\Users\\ezehu\\git\\TP5-OO2-Punto4-Decorator-ConsumoDeServicioWeb\\data.txt", ", ",
+					new EnBaseGuardarDatoDecoratorComponente(
+							new BaseDeDatosPropiedades("jdbc:mysql://127.0.0.1/tp5_consumodeservicioweb", "root", ""),
+							"INSERT INTO post (userId, id, title, body)" + "VALUES (?, ?, ?, ?);",
+							new EnDiscoGuardaDatoDecoratorComponente(
+									"C:\\Users\\ezehu\\git\\TP5-OO2-Punto4-Decorator-ConsumoDeServicioWeb\\data.txt",
+									" || ", new RestCallComponente("https://jsonplaceholder.typicode.com/posts"))));
+
+			dosVecesEnDiscoConDistintoFormatoYUnaEnBase.guardarDatos();
+			System.out.println("se guardaron los datos");
 
 		} catch (DomainExceptions e) {
 			System.out.println(e.getMessage());
 		}
-		// TENES QUE HACER EL LEER DATOS EN RESTCALL Y LOS GUARDARDATOS
-//		endisco(new RestCall("https://jsonplaceholder.typicode.com/posts"))
 	}
 }
